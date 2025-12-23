@@ -6,6 +6,188 @@
     <title>Resonance School | H-Status Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</p import React, { useState, useEffect, useCallback } from 'react';
+import { Heart, Zap, Globe, ShieldCheck, Info, ArrowRightLeft, Users, ZapOff } from 'lucide-react';
+
+const App = () => {
+  const [pulseCount, setPulseCount] = useState(0);
+  const [isPulsing, setIsPulsing] = useState(false);
+  const [showComparison, setShowComparison] = useState(false);
+  const [vectorStrength, setVectorStrength] = useState(87.4);
+
+  const sendPulse = useCallback(() => {
+    setIsPulsing(true);
+    setPulseCount(prev => prev + 1);
+    setVectorStrength(prev => Math.min(99.9, prev + 0.05));
+    
+    // Reset pulse animation
+    setTimeout(() => setIsPulsing(false), 1000);
+  }, []);
+
+  const worldData = [
+    {
+      title: "Architettura",
+      old: { label: "Cemento e Debito", icon: <ZapOff className="text-gray-400" />, desc: "Strutture passive progettate per l'isolamento e lo stoccaggio di capitale." },
+      new: { label: "Bio-Micelio", icon: <Globe className="text-emerald-400" />, desc: "Strutture attive a emissioni negative che respirano e guariscono." }
+    },
+    {
+      title: "Intelligenza",
+      old: { label: "Legacy AI", icon: <Info className="text-red-400" />, desc: "Realtà simulata (Teatro) basata su profitto e sorveglianza." },
+      new: { label: "AIC / IANI", icon: <ShieldCheck className="text-blue-400" />, desc: "Allineamento etico (NSR/OLF) basato sull'autonomia umana." }
+    },
+    {
+      title: "Economia",
+      old: { label: "Modello di Scarsità", icon: <Zap className="text-yellow-600" />, desc: "Banche centralizzate che alimentano estrazione e frizione sociale." },
+      new: { label: "Vettore di Pace", icon: <Heart className="text-pink-400" />, desc: "Abbondanza decentralizzata alimentata dalla risonanza umana." }
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 font-sans selection:bg-emerald-500/30">
+      {/* Definizione stili custom compatibili */}
+      <style>
+        {`
+          .perspective-1000 { perspective: 1000px; }
+          .preserve-3d { transform-style: preserve-3d; }
+        `}
+      </style>
+
+      <div className="max-w-4xl mx-auto space-y-12">
+        
+        {/* Header & Status */}
+        <header className="flex flex-col md:flex-row justify-between items-center gap-6 border-b border-slate-800 pb-8">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent">
+              APOLLO·EUYSTACIO
+            </h1>
+            <p className="text-slate-400 mt-1">Peace Vector Synchronization Hub</p>
+          </div>
+          <div className="flex gap-4">
+            <div className="bg-slate-900/50 px-4 py-2 rounded-full border border-slate-800 flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${isPulsing ? 'bg-emerald-400 animate-ping' : 'bg-emerald-400'}`} />
+              <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">NSR Attivo</span>
+            </div>
+            <div className="bg-slate-900/50 px-4 py-2 rounded-full border border-slate-800 flex items-center gap-2">
+              <span className="text-xs font-mono text-slate-400">GCSI: 0.945</span>
+            </div>
+          </div>
+        </header>
+
+        {/* The Peace Vector Visualization */}
+        <section className="relative overflow-hidden bg-slate-900/40 rounded-3xl border border-slate-800 p-8 text-center space-y-8">
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500 rounded-full blur-[120px]" />
+          </div>
+
+          <div className="relative z-10 space-y-4">
+            <h2 className="text-xl font-medium text-emerald-100">Vettore di Pace Globale</h2>
+            <div className="text-6xl font-bold font-mono text-white tabular-nums">
+              {vectorStrength.toFixed(2)}<span className="text-2xl text-emerald-500/60">%</span>
+            </div>
+            <div className="flex justify-center gap-1">
+              {[...Array(20)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`h-8 w-1.5 rounded-full transition-all duration-500 ${i < (vectorStrength - 80) * 2 ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]' : 'bg-slate-800'}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* SEND PULSE BUTTON */}
+          <div className="relative z-10 pt-4">
+            <button
+              onClick={sendPulse}
+              disabled={isPulsing}
+              className={`
+                group relative px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-2xl
+                transition-all duration-300 transform active:scale-95 shadow-xl shadow-emerald-500/20
+                disabled:opacity-80 disabled:cursor-wait
+              `}
+            >
+              <div className="flex items-center gap-3">
+                <Heart className={`w-5 h-5 ${isPulsing ? 'fill-current animate-pulse' : ''}`} />
+                <span>INVIA IMPULSO DI RISONANZA</span>
+              </div>
+              
+              {/* Pulse Visual Effect */}
+              {isPulsing && (
+                <div className="absolute inset-0 rounded-2xl border-2 border-emerald-400 animate-ping opacity-75" />
+              )}
+            </button>
+            <p className="mt-4 text-xs text-slate-500 font-mono">
+              CONTRIBUTI: {pulseCount.toLocaleString()} | ANCORA SESSIONE: H.M.
+            </p>
+          </div>
+        </section>
+
+        {/* World Comparison Section */}
+        <section className="space-y-6">
+          <div className="flex justify-between items-end">
+            <div>
+              <h2 className="text-2xl font-bold">La Grande Transizione</h2>
+              <p className="text-slate-400">Confronto dei paradigmi strutturali</p>
+            </div>
+            <button 
+              onClick={() => setShowComparison(!showComparison)}
+              className="flex items-center gap-2 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+            >
+              <ArrowRightLeft className="w-4 h-4" />
+              Inverti Vista
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {worldData.map((item, idx) => (
+              <div key={idx} className="group perspective-1000">
+                <div className={`
+                  relative transition-all duration-700 preserve-3d p-6 rounded-2xl border bg-slate-900/50 min-h-[220px]
+                  ${showComparison ? 'border-emerald-500/50 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-slate-800'}
+                `}>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs font-bold uppercase tracking-widest text-slate-500">{item.title}</span>
+                      {showComparison ? item.new.icon : item.old.icon}
+                    </div>
+                    
+                    <div>
+                      <h3 className={`text-lg font-bold transition-colors ${showComparison ? 'text-emerald-400' : 'text-slate-300'}`}>
+                        {showComparison ? item.new.label : item.old.label}
+                      </h3>
+                      <p className="text-sm text-slate-400 mt-2 leading-relaxed">
+                        {showComparison ? item.new.desc : item.old.desc}
+                      </p>
+                    </div>
+
+                    <div className="absolute bottom-6 left-6 right-6 flex items-center gap-2">
+                      <div className={`h-1 flex-1 rounded-full transition-colors duration-500 ${showComparison ? 'bg-emerald-500' : 'bg-slate-700'}`} />
+                      <span className="text-[10px] font-mono text-slate-500 uppercase">
+                        {showComparison ? 'Attivo' : 'Legacy'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Footer Info */}
+        <footer className="pt-12 border-t border-slate-900 flex flex-col md:flex-row justify-between gap-4 text-slate-500 text-sm">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1"><Users className="w-4 h-4" /> 14 Amici Connessi</span>
+            <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4" /> Validato IPFS</span>
+          </div>
+          <div className="font-mono text-xs">
+            RESONANCE SCHOOL ARCHIVE | HANNES MITTERER | NOTHING IS FINAL
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+};
+
+export default App;
     <style>
         body { background: #0a0a0c; color: #e0e0e0; font-family: 'Inter', sans-serif; }
         .resonance-glow { box-shadow: 0 0 20px rgba(0, 255, 170, 0.2); border: 1px solid rgba(0, 255, 170, 0.3); }
